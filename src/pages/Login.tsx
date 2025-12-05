@@ -146,22 +146,12 @@ const Login = () => {
               )}
             </button>
 
-            {/* Forgot Password Link */}
-            <div className="text-center">
-              <button
-                type="button"
-                className="text-sm text-secondary hover:text-secondary/80 transition-colors"
-                onClick={() => toast({ title: "Contact your administrator to reset your password." })}
-              >
-                Forgot password?
-              </button>
-            </div>
           </form>
         </div>
 
         {/* Footer */}
         <p className="text-center text-muted-foreground text-xs mt-6">
-          © 2024 AHSA Spare Parts. All rights reserved.
+          © 2025 AHSA Spare Parts. All rights reserved.
         </p>
       </div>
     </div>
