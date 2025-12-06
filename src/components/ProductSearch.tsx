@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Package, MapPin, DollarSign, Box } from "lucide-react";
+import { Search, Package, MapPin, Box } from "lucide-react";
 import { Product } from "@/types/inventory";
 import { mockProducts } from "@/data/mockProducts";
 
@@ -64,7 +64,7 @@ const ProductSearch = ({ onSelectProduct, selectedProductId }: ProductSearchProp
                 <th className="px-4 py-3 font-medium">Product ID</th>
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Category</th>
-                <th className="px-4 py-3 font-medium text-right">Price</th>
+                <th className="px-4 py-3 font-medium text-right">Price (SAR)</th>
                 <th className="px-4 py-3 font-medium text-center">Stock</th>
                 <th className="px-4 py-3 font-medium">Location</th>
               </tr>
@@ -93,7 +93,7 @@ const ProductSearch = ({ onSelectProduct, selectedProductId }: ProductSearchProp
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">{product.category}</td>
                   <td className="px-4 py-3 text-right font-medium text-foreground">
-                    ${product.price.toFixed(2)}
+                    SAR {product.price.toFixed(2)}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={getStockStatus(product.quantityInStock).class}>
@@ -132,10 +132,12 @@ const ProductSearch = ({ onSelectProduct, selectedProductId }: ProductSearchProp
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-secondary mt-0.5" />
+              <div className="w-5 h-5 flex items-center justify-center text-secondary mt-0.5 font-bold text-sm">
+                SAR
+              </div>
               <div>
                 <p className="text-sm text-muted-foreground">Unit Price</p>
-                <p className="font-bold text-xl text-foreground">${selectedProduct.price.toFixed(2)}</p>
+                <p className="font-bold text-xl text-foreground">SAR {selectedProduct.price.toFixed(2)}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">

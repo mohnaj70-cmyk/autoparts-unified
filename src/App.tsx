@@ -3,9 +3,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import InStoreSale from "./pages/InStoreSale";
 import OnlineOrders from "./pages/OnlineOrders";
+import ManageInventory from "./pages/ManageInventory";
+import GenerateReports from "./pages/GenerateReports";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -13,17 +16,21 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/sale" element={<InStoreSale />} />
-          <Route path="/online-orders" element={<OnlineOrders />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/sale" element={<InStoreSale />} />
+            <Route path="/online-orders" element={<OnlineOrders />} />
+            <Route path="/manage-inventory" element={<ManageInventory />} />
+            <Route path="/reports" element={<GenerateReports />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

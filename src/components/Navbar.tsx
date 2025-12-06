@@ -1,16 +1,32 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { LogOut, User, Store, Globe } from "lucide-react";
+import { LogOut, User, Store, Globe, BarChart3, Package } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { ROLE_LABELS, ROLE_PERMISSIONS } from "@/types/auth";
 import ahsaLogo from "@/assets/ahsa-logo.jpg";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
+    logout();
     navigate("/");
   };
 
   const isActive = (path: string) => location.pathname === path;
+
+  const canAccess = (path: string) => {
+    if (!user) return false;
+    return ROLE_PERMISSIONS[user.role].includes(path);
+  };
+
+  const navItems = [
+    { path: "/sale", label: "In-Store Sale", icon: Store },
+    { path: "/online-orders", label: "Online Orders", icon: Globe },
+    { path: "/manage-inventory", label: "Manage Inventory", icon: Package },
+    { path: "/reports", label: "Generate Reports", icon: BarChart3 },
+  ];
 
   return (
     <header className="h-16 bg-card border-b border-border px-6 flex items-center justify-between">
@@ -31,28 +47,22 @@ const Navbar = () => {
 
         {/* Navigation Tabs */}
         <nav className="flex items-center gap-1 ml-4">
-          <button
-            onClick={() => navigate("/sale")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isActive("/sale")
-                ? "bg-secondary/20 text-secondary"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <Store className="w-4 h-4" />
-            In-Store Sale
-          </button>
-          <button
-            onClick={() => navigate("/online-orders")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              isActive("/online-orders")
-                ? "bg-secondary/20 text-secondary"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <Globe className="w-4 h-4" />
-            Online Orders
-          </button>
+          {navItems
+            .filter((item) => canAccess(item.path))
+            .map((item) => (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive(item.path)
+                    ? "bg-secondary/20 text-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </button>
+            ))}
         </nav>
       </div>
 
@@ -63,8 +73,12 @@ const Navbar = () => {
             <User className="w-4 h-4 text-secondary" />
           </div>
           <div className="text-right">
-            <p className="text-sm font-medium text-foreground">Sales Employee</p>
-            <p className="text-xs text-muted-foreground">Active</p>
+            <p className="text-sm font-medium text-foreground">
+              {user?.displayName || "User"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {user ? ROLE_LABELS[user.role] : "Active"}
+            </p>
           </div>
         </div>
         <button
