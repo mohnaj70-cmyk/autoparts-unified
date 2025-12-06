@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Lock, User, ChevronDown } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserRole, ROLE_LABELS, ROLE_PERMISSIONS } from "@/types/auth";
 import ahsaLogo from "@/assets/ahsa-logo.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("sales_employee");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -38,11 +42,15 @@ const Login = () => {
 
     // Mock authentication - accept any credentials for demo
     if (username && password) {
+      login(username, role);
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${username}!`,
+        description: `Welcome back, ${username}! Logged in as ${ROLE_LABELS[role]}.`,
       });
-      navigate("/sale");
+      
+      // Navigate based on role
+      const defaultRoute = ROLE_PERMISSIONS[role][0];
+      navigate(defaultRoute);
     } else {
       setError("Invalid username or password");
     }
@@ -123,6 +131,26 @@ const Login = () => {
                     <Eye className="w-5 h-5" />
                   )}
                 </button>
+              </div>
+            </div>
+
+            {/* Role Selection */}
+            <div className="space-y-2">
+              <label htmlFor="role" className="text-sm font-medium text-foreground">
+                Role
+              </label>
+              <div className="relative">
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as UserRole)}
+                  className="input-field w-full appearance-none pr-10"
+                >
+                  <option value="sales_employee">Sales Employee</option>
+                  <option value="inventory_manager">Inventory Manager</option>
+                  <option value="general_manager">General Manager</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
               </div>
             </div>
 

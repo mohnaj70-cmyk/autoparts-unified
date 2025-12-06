@@ -60,7 +60,7 @@ const SalePanel = ({ selectedProduct }: SalePanelProps) => {
       description: (
         <div className="mt-2">
           <p className="font-mono text-sm">{invoiceNumber}</p>
-          <p className="text-xs mt-1">Total: ${grandTotal.toFixed(2)}</p>
+          <p className="text-xs mt-1">Total: SAR {grandTotal.toFixed(2)}</p>
         </div>
       ),
     });
@@ -222,15 +222,15 @@ const SalePanel = ({ selectedProduct }: SalePanelProps) => {
             <div className="space-y-2 pt-3 border-t border-border/50">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Unit Price</span>
-                <span className="text-foreground">${selectedProduct.price.toFixed(2)}</span>
+                <span className="text-foreground">SAR {selectedProduct.price.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Line Total</span>
-                <span className="text-foreground">${lineTotal.toFixed(2)}</span>
+                <span className="text-foreground">SAR {lineTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-border/50">
                 <span className="font-semibold text-foreground">Grand Total</span>
-                <span className="text-2xl font-bold text-secondary">${grandTotal.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-secondary">SAR {grandTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
